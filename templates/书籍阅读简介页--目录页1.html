@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style >
+    body
+    {
+    background-size: cover;
+    background-attachment:fixed;
+    background-image:url({{url_for('static',filename='111.jpg')}});
+    }
+</style>
+<title>{{context["title"]}}</title>
+<link href="{{url_for('static',filename='书籍阅读简介页--目录页_files/css.css')}}" rel="stylesheet" type="text/css">
+<link href="{{url_for('static',filename='书籍阅读简介页--目录页_files/arcticle2.css')}}" rel="stylesheet" type="text/css">
+<script src="{{url_for('static',filename='书籍阅读简介页--目录页_files/jquery.js.下载')}}"></script>
+<script src="{{url_for('static',filename='书籍阅读简介页--目录页_files/js.js.下载')}}"></script>
+<script src="{{url_for('static',filename='书籍阅读简介页--目录页_files/list.js.下载')}}"></script>
+<script src="{{url_for('static',filename='书籍阅读简介页--目录页_files/comment.js.下载')}}"></script>
+
+
+<script src="{{url_for('static',filename='书籍阅读简介页--目录页_files/share.js.下载')}}"></script><link rel="stylesheet" href="{{url_for('static',filename='书籍阅读简介页--目录页_files/share_style0_16.css')}}"></head>
+
+<body >
+<header class="clear">
+<img src="{{url_for('static',filename='logo.jfif')}} ">
+<div class="logo">
+    <h1></h1>
+    <div class="clear"></div>
+</div>
+<div class="search left">
+    <form  method="post">
+        <input type="text" value="" name="keyword" placeholder="请输入书名或作者名称">
+        <input type="submit" value="搜索">
+    </form>
+    <p class="left">
+                <span>推荐：</span>
+                {%for i in context["recom"]%}
+        <a href="/{{i[1]}}">{{i[0]}}</a>
+        {%endfor%}
+
+    </p>
+</div>
+ <div class="reg">
+  <div class="delu2 clear">
+      <div class="self ease">
+      <a href="javascript:;" class="clear">{{session['username']}}<span class="icon ease"></span></a>
+      <div class="clear"></div>
+       <ul class="clear">
+         <li><a href="/user">书架</a></li>
+
+       </ul>
+      </div>
+    </div>
+
+
+ </div>
+</header>
+<!--头部结束-->
+
+<div class="box clear">
+ <div class="list">
+  <h3>{{context["title"]}}</h3>
+  <div class="tab_1">
+    <div class="info clear">
+
+     <img src="{{url_for('static',filename=context['img'])}} " class="left" style="margin-right:20px;width:150px;"> <p class="left" style="width:580px; overflow:hidden;">{{context["intro"]}}</p>
+
+    </div>
+     <div class="fx clear">
+             <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+         </script>
+         <p class="dsf">
+    <form action="" method="post">
+         <input style="width:250px;height:50px;background:transparent;" type="submit" name="开始阅读" value="开始阅读" >  <a> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp</a>
+         <input type="submit" name="加入书架" value="加入书架" style="width:250px;height:50px;background:transparent;">
+    </form>
+    {% for i in get_flashed_messages() %}
+            	                                 -----------------------------------------	-{{ i }}--------------------------------------
+       				{% endfor %}
+     </div>
+     <ul class="clear info_1">
+     <p>基本信息</p>
+         <li><span>书籍名称：</span>{{context["title"]}}</li>
+         <li><span>作 &nbsp; &nbsp; &nbsp; 者：</span>{{context["author"]}}</li>
+         <li><span>更新时间：</span>{{context["uptime"]}}</li>
+         <li><span>分 &nbsp; &nbsp; &nbsp; 类：</span>{{context["cate"]}}</li>
+     </ul>
+  </div><!--简介介绍-->
+  
+  <div class="tab_1">
+     <div class="tit">章节目录<b></b></div><span>上次阅读：</span><a href="/{{context['id']}}/{{context['last'][0][1]}}">{{context["last"][0][0]}}</a>
+     <div class="info_1">
+         <ul class="clear">
+         {% for i in context.chapter%}
+         <li><a href="/{{context['id']}}/{{i[1]}}">{{i[0]}}</a></li>
+         {% endfor %}
+         </ul>
+     </div>
+  </div><!--章节目录-->
+ </div>
+
+
+</div>
+
+
+</body></html>

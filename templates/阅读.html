@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='yuedu.css')}}" />
+</head>
+<body>
+    <div id="cont2">
+        <div id="chapter">
+        <table border="0">
+        <tr><td class="bav_border_top"><a href="/">小说</a>  &gt; <a href="/c/{{context['cate']}}">{{context["cate"]}}</a> &gt; <a href="/{{context['bookid']}}">{{context["bname1"]}}</a></td>
+        <td class="bav_border_top"><div class="fr pr20"> <a href="/user">我的书架</a> │ <a href="/{{context['bookid']}}" title="{{context['bname']}}最新更新">返回目录</a></div></td></tr>
+        <tr><td></td>
+        <td>
+        <div style="width:260px;float:right;"><strong>选择字号：</strong>
+
+        <button id="set_big_size">大</button>&nbsp;
+        <button id="set_mid_size">中</button>&nbsp;
+        <button id="set_small_size">小</button>
+        <strong><button id="night_mode" >切换夜间模式</button></strong></div></td></tr></table>
+        <div id="cps_title"><h1> {{context["chapter"][0][1]}}</h1></div>
+        <div id="ad2"><table id="adt"><tr>
+        </tr></table></div>
+        <div id="cp_content">
+            {{context["chapter"][0][0]}}
+        </div>
+        <div id="pg_bar">
+        <a id="prevLink" href="/{{context['bookid']}}/{{(context['prec'])}}">上一章</a>
+        <a id="home" href="/{{context['bookid']}}"> 回目录</a>
+        <a id="nextLink" href="/{{context['bookid']}}/{{(context['aftc'])}}">下一章</a>
+        <div id="ad4"><script type="text/javascript">showChapterPageAd4();</script></div>
+            {% for i in get_flashed_messages() %}
+            		{{ i }}
+       				{% endfor %}
+        </div>
+        </div>
+        <div style="display:none">
+        </div>
+        <script>
+            var set_night_mode=document.getElementById('night_mode');
+            var title=document.getElementById('cps_title');
+            var main_content=document.getElementById('cp_content')
+            var big=document.getElementById("set_big_size");
+            var mid=document.getElementById("set_mid_size");
+            var small=document.getElementById("set_small_size");
+            console.log(big);
+            console.log(set_night_mode);
+            set_night_mode.onclick=function()
+            {
+                if(document.body.style.backgroundColor!="black")
+                {
+                    document.body.style.backgroundColor="black";
+                    title.style.color='#9E9E9E';
+                    main_content.style.color='#9E9E9E';
+                }
+                else
+                {
+                    document.body.style.backgroundColor="cornsilk";
+                    title.style.color='black';
+                    main_content.style.color='black';
+                }
+            }
+            console.log(main_content.innerHTML);
+            big.onclick=function()
+            {
+                main_content.style.fontSize="28px";
+            }
+            mid.onclick=function()
+            {
+                main_content.style.fontSize="20px";
+            }
+            small.onclick=function()
+            {
+                main_content.style.fontSize="16px";
+            }
+        </script>
+</body>
+</html>
