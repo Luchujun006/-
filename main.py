@@ -10,8 +10,11 @@ app = Flask(__name__)
 app.config[' SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = '123456'
 app.config['SQLALCHEMY_COMMIT_TEARDOWN'] = True
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:cjx01069599.@192.168.181.81:3306/book'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:20201003886@182.61.132.41:3306/book'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:连接数据库'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:连接数据库'
+app.config['SQLALCHEMY_POOL_TIMEOUT']=100
+app.config['SQLALCHEMY_MAX_OVERFLOW']=1000
+#app.config['SQLALCHEMY_POOL_RECYCLE'] = 60
 # 协议：mysql+pymysql
 # 用户名：root
 # 密码：root
@@ -21,6 +24,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:20201003886@182.61
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 db = SQLAlchemy(app)
 
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db.session.remove()
 
 @app.route('/user', methods=['POST', 'GET'])
 def enter11():
@@ -77,6 +83,7 @@ def enter11():
 
             for i in bookid :
                 db.session.execute("delete from bookshelf where book_id='"+str(i)+"' and user_id='"+user+"'")
+                db.session.commit()
                 db.session.execute(
                     "update book.book set collect_count=(select collect_count from(select collect_count from book.book where book_id='" + str(i) + "')a)-1 where book_id='" + str(i) + "'")
             print("shanchuchenggong")
@@ -279,10 +286,11 @@ def book_content(book_id, chapter_id):
                 chap_id=chapter_id
             )
             db.session.add(record)
-
+            db.session.commit()
         else:
             a=a[0]
             db.session.execute("insert into book.read_rate VALUES (" + str(a[0]) + ", " + str(a[1]) + ",'" + str(userid) + "'," + str(chapter_id) + ")  ON DUPLICATE KEY UPDATE chap_id = '"+str(chapter_id)+"'")
+            db.session.commit()
     book1 = book.query.get(book_id)
     if not book1:
         return jsonify(msg='404 not found'), 404
@@ -522,5 +530,6 @@ class UserBasedCf:
     # 如果要保存，需要新建一个table
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, port=80)  # 127.0.0.1 回路 自己返回自己
+    app.run(host='0.0.0.0', debug=True, port=8001)  # 127.0.0.1 回路 自己返回自己
+
 
