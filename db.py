@@ -2,10 +2,10 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '123456'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:20201003886@182.61.132.41:3306/book'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:连接数据库'
 # 协议：mysql+pymysql
 # 用户名：root
-# 密码：root
+# 密码：设置密码
 # IP地址：localhost
 # 端口：3306
 # 数据库名：flaskdb #这里的数据库需要提前建好
